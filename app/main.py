@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from typing import Dict,List
 
 # 라우터 임포트
-from app.routers.health import router as health_router
+from routers.health import router as health_router
 
 # FastAPI 애플리케이션 인스턴스 생성
 app = FastAPI()
