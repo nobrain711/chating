@@ -1,0 +1,33 @@
+# 해당 docker-compose 파일은 fastapi를 이용한 chating API 서비스를 정의하는 파일입니다.
+# 'docker-compose -f 파일루트? up --build' command로 컨테이너를 빌드하고 실행할 수 있습니다.
+# compose파일은 서비스 정의, 빌드 컨텍스트, 환경 변수, 볼륨 마운트, 포트 매핑 등을 포함합니다.
+# dockerfile은 의존성, 애플리케이션 소스코드 복사, 포트 공개 등을 정의합니다.
+# 해당 docker-compose 파일은 3.9 버전의 도커 컴포즈 문법을 사용합니다.
+version: '3.9'
+
+# 서비스 정의
+services:
+  # FastAPI 기반의 chating API 서비스
+  api:
+    # 컨테이너 빌드 설정
+    build:
+      context: ..  # 빌드 컨텍스트를 현재 디렉토리의 상위 디렉토리로 설정
+      dockerfile: ./docker/fastapi.Dockerfile # 도커파일 경로 지정
+    container_name: chating_api # 컨테이너 이름 설정
+    environment: 
+      - PYTHONDONTWRITEBYTECODE=1 # 파이썬 바이트코드 생성을 방지
+      - PYTHONUNBUFFERED=1 # 파이썬 출력 버퍼링 비활성화
+    ports:
+      - "8000:8000" # 호스트의 8000 포드를 컨테이너의 8000 포트에 매칭
+    # 컨테이너 시작 시 실행할 명령어 정의
+      # uvicorn app.main:app  fastapi 애플리케이션 실행
+      # --host 0.0.0.0  모든 네트워크 인터페이스에서 수신 대기
+      # --port 8000 8000 포트 사용
+      # --workers 1 워커 프로세스 1개 사용
+      # --reload 코드 변경 시 자동 재시작 활성화
+    command: > 
+      uvicorn app.main:app 
+      --host 0.0.0.0 
+      --port 8000
+      --workers 1
+      --reload
