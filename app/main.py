@@ -5,8 +5,14 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import Dict,List
 
+# 라우터 임포트
+from app.routers.health import router as health_router
+
 # FastAPI 애플리케이션 인스턴스 생성
 app = FastAPI()
+
+# 라우터 등록
+app.include_router(health_router)
 
 # in-memory data store
 '''
