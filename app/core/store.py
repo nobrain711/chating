@@ -1,8 +1,14 @@
-# store.py for app/core
-# 채팅 기록을 저장하고 불러오는 기능을 담당합니다.
-## 현재는 in-memory store로 구현되어 있습니다.
-## 추후에 데이터베이스 연동시 교체 예정입니다.
-## 교체 시에는 store.py 기능별로 분리 할 수 있습니다.
+####################################
+# store.py for core store module
+# 현 프로젝트에서 사용하는 in-memory 데이터 저장소
+# 추후에 데이터베이스로 교체 예정
+## 현재 저장 요소:
+### conversations: 대화 기록 저장
+### users: 유저 정보 저장
+## 추후 수정 예정:
+### 데이터베이스 연동 시 in-memory store 부분 교체
+### 저장 구조 변경 가능성 있음
+####################################
 
 # 필요 라이브러리 import
 from typing import List, Dict

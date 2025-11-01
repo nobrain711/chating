@@ -1,6 +1,16 @@
-# security.py for core module
+####################################
+# security.py for core security module
 # 애플리케이션의 보안 관련 기능들을 정의하는 파일입니다.
-## 현 시점에서는 유저의 비밀번호 해싱 및 검증 기능을 포함합니다.
+# 현재 시점에서는 유저의 비밀번호 해싱 및 검증 기능을 포함합니다.
+## 현재 정의된 기능:
+### HashPassword: 비밀번호 해싱 함수
+### VerifyPassword: 비밀번호 검증 함수
+## 추후 추가 예정된 기능:
+### 비밀번호 재설정
+## 미정 사항 (JWT or Session중에 결정되면 추가 예정):
+### jwt 토큰 생성 및 검증 기능 추가 여부
+### session 관리 기능 추가 여부
+####################################
 
 # 필요한 라이브러리 import
 from passlib.context import CryptContext
