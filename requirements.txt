@@ -1,4 +1,24 @@
+#################################
+# requirements.txt
+# Python 패키지 의존성 목록
+#################################
+
+# --- web framework ---
 fastapi==0.115.0
 uvicorn[standard]==0.30.1
+
+# --- database ---
+SQLAlchemy==2.0.36
+psycopg2-binary==2.9.9
+alembic==1.13.3
+
+# --- authentication ---
 bcrypt==4.0.1
 passlib[bcrypt]==1.7.4
+
+# --- utilities ---
+pydantic[email]==2.9.2
+
+# --- testing ---
+pytest==8.3.3
+httpx==0.27.0
