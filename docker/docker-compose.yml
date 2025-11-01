@@ -13,7 +13,6 @@ version: '3.9'
 
 # 서비스 정의
 services:
-  # FastAPI 기반의 chating API 서비스
   # postgres SQL 데이터 베이스 서비스
   db:
     container_name: chating_db  # 컨테이너 이름 설정
@@ -34,6 +33,7 @@ services:
       timeout: 3s
       retries: 10
   
+  # FastAPI 기반의 chating API 서비스
   api:
     container_name: chating_api # 컨테이너 이름 설정
     # 컨테이너 빌드 설정
