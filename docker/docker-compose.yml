@@ -19,7 +19,8 @@ services:
       - PYTHONDONTWRITEBYTECODE=1 # 파이썬 바이트코드 생성을 방지
       - PYTHONUNBUFFERED=1 # 파이썬 출력 버퍼링 비활성화
       - PYTHONPATH=/app  # 파이썬 경로 설정
-    # volumes:
+      - WATCHDOG_ENABLE=true  # 코드 변경 감지 활성화
+    volumes:
       - ..:/app  # 호스트의 app 디렉토리를 컨테이너의 /app 디렉토리에 마운트
     ports:
       - "8000:8000" # 호스트의 8000 포드를 컨테이너의 8000 포트에 매칭
@@ -35,3 +36,5 @@ services:
       --port 8000
       --workers 1
       --reload
+      --reload-dir /app
+      --log-level debug
