@@ -47,7 +47,7 @@ services:
       - PYTHONPATH=/app  # 파이썬 경로 설정
       - WATCHDOG_ENABLE=true  # 코드 변경 감지 활성화
       - timezone=Asia/Seoul  # 타임존 설정
-      - database-_url=postgresql+asyncpg://master:dev_password@db:5432/dev_db  # 데이터베이스 연결 URL 설정
+      - database_url=postgresql+asyncpg://master:dev_password@db:5432/dev_db  # 데이터베이스 연결 URL 설정
     volumes:
       - ..:/app  # 호스트의 app 디렉토리를 컨테이너의 /app 디렉토리에 마운트
     depends_on: # 의존성 서비스 설정
