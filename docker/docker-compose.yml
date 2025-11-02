@@ -16,12 +16,14 @@ services:
   # postgres SQL 데이터 베이스 서비스
   db:
     container_name: chating_db  # 컨테이너 이름 설정
-    image: postgres:16  # Postgres 16 이미지 사용
+    build: 
+      dockerfile: ./postgres.Dockerfile # postgres.Dockerfile 사용
     environment:
       - POSTGRES_USER=master  # 데이터베이스 사용자 이름
       - POSTGRES_PASSWORD=dev_password  # 데이터베이스 사용자 비밀번호
-      - POSTGRES_DB=dev_db  # 생성할 데이터베이스 이름
-      - timezone=Asia/Seoul  # 데이터베이스 타임존 설정
+      - POSTGRES_DB=dev_db  # 생성할 데이터베이스 이름 실제 사용은 안함
+      - TZ=Asia/Seoul  # 데이터베이스 타임존 설정
+      - POSTGRES_INITDB_ARGS=--locale=ko_KR.UTF-8 --encoding=UTF8 # 인코딩 언어 설정
     volumes:
       - pgdata:/var/lib/postgresql/data  # 데이터 영속성을 위한 볼륨 마운트
       - ./init-db:/docker-entrypoint-initdb.d:ro  # 초기화 스크립트 마운트
@@ -46,8 +48,8 @@ services:
       - PYTHONUNBUFFERED=1 # 파이썬 출력 버퍼링 비활성화
       - PYTHONPATH=/app  # 파이썬 경로 설정
       - WATCHDOG_ENABLE=true  # 코드 변경 감지 활성화
-      - timezone=Asia/Seoul  # 타임존 설정
-      - database_url=postgresql+asyncpg://master:dev_password@db:5432/dev_db  # 데이터베이스 연결 URL 설정
+      - TZ=Asia/Seoul  # 타임존 설정
+      - DATABASE_URL=postgresql+psycopg2://master:dev_password@db:5432/dev_db  # 데이터베이스 연결 URL 설정
     volumes:
       - ..:/app  # 호스트의 app 디렉토리를 컨테이너의 /app 디렉토리에 마운트
     depends_on: # 의존성 서비스 설정
