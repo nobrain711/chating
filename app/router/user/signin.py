@@ -36,10 +36,10 @@ from ...core.security import VerifyPassword
 from ...core.store import users
 
 # 라우터 생성
-router = APIRouter()
+router = APIRouter(prefix="/signin", tags=["user"])
 
 # 로그인
-@router.post("/signin")
+@router.post("")
 def signin(payload: UserLogin):
   """
     유저 로그인 엔드포인트

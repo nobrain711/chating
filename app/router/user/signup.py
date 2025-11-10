@@ -27,8 +27,6 @@
 # 필요한 라이브러리 import
 from fastapi import APIRouter, HTTPException
 
-from app import router
-
 # 필요한 스카마 import
 from ...schemas.user import UserCreate
 
