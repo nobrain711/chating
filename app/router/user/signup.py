@@ -28,13 +28,13 @@
 from fastapi import APIRouter, HTTPException
 
 # 필요한 스카마 import
-from ...schemas.user import UserCreate
+from app.schemas.user import UserCreate
 
 # 필요한 스토어 import
-from ...core.store import users
+from app.core.store import users
 
 # 필요한 시큐리티 기능 import
-from ...core.security import HashPassword
+from app.core.security import HashPassword
 
 # 라우터 생성
 router = APIRouter()

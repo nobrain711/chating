@@ -22,10 +22,10 @@
 from fastapi import APIRouter
 
 # 스키마 import
-from ..schemas.chat import MessageIn, MessageOut
+from app.schemas.chat import MessageIn, MessageOut
 
 # core 모듈에서 대화 내용 저장소 import
-from ..core.store import conversations
+from app.core.store import conversations
 
 # APIRouter 인스턴스 생성
 router = APIRouter(prefix="", tags=["chat"])

@@ -11,9 +11,9 @@
 from fastapi import FastAPI
 
 # 라우터 import
-from .router.health import router as health_router # 헬스체크 라우터
-from .router.chat import router as chat_router # 채팅 라우터
-from .router.user import api_router as user_router # 유저 라우터
+from app.router.health import router as health_router # 헬스체크 라우터
+from app.router.chat import router as chat_router # 채팅 라우터
+from app.router.user import api_router as user_router # 유저 라우터
 
 # FastAPI 애플리케이션 인스턴스 생성
 app = FastAPI()

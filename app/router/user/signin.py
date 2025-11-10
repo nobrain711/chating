@@ -29,11 +29,11 @@
 from fastapi import APIRouter, HTTPException
 
 # 필요한 스키마 import
-from ...schemas.user import UserLogin
+from app.schemas.user import UserLogin
 
 # store와 해싱 함수 import
-from ...core.security import VerifyPassword
-from ...core.store import users
+from app.core.security import VerifyPassword
+from app.core.store import users
 
 # 라우터 생성
 router = APIRouter(prefix="/signin", tags=["user"])

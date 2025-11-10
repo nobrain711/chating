@@ -10,7 +10,7 @@ from fastapi import APIRouter
 api_router = APIRouter(prefix="/user", tags=["user"])
 
 # 서브 라우터를 import
-from . import signup, signin
+from app.router.user import signup, signin
 
 # 서브 라우터 등록
 api_router.include_router(signup.router)

@@ -25,7 +25,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import OperationalError, TimeoutError, DBAPIError
 
 # DB 세션 가져오기
-from ..db.engin import get_sync_db
+from app.db.engin import get_sync_db
 
 # APIRouter 인스턴스 생성
 router = APIRouter(prefix="/health", tags=["health"])
