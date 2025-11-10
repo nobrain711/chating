@@ -7,10 +7,11 @@
 # API Router 모듈 import 및 생성
 from fastapi import APIRouter
 
-api_router = APIRouter(prefix="/user", tags=["user"])
-
 # 서브 라우터를 import
 from app.router.user import signup, signin
+
+# 라우터 생성
+api_router = APIRouter(prefix="/user", tags=["user"])
 
 # 서브 라우터 등록
 api_router.include_router(signup.router)
