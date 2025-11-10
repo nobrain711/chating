@@ -1,0 +1,118 @@
+name: CI (dev)
+
+on:
+  pull_request:
+    branches:
+      - dev
+  push:
+    branches:
+      - dev
+
+concurrency:
+  group: dev-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integration:
+    name: Integration (Py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: master
+          POSTGRES_PASSWORD: dev_password
+          POSTGRES_DB: dev_db
+          TZ: Asia/Seoul
+        options: >-
+          --health-cmd="pg_isready -U master -d dev_db"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+        ports:
+          - "5432:5432"
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd="redis-cli ping || exit 1"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+        ports:
+          - "6379:6379"
+
+    env:
+      TZ: Asia/Seoul
+      DATABASE_URL: postgresql+psycopg2://master:dev_password@localhost:5432/dev_db
+      REDIS_URL: redis://localhost:6379/0
+      PYTHONUNBUFFERED: "1"
+
+    strategy:
+      matrix:
+        python-version:
+          - "3.12"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            pip-${{ runner.os }}-${{ matrix.python-version }}-
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest-cov
+
+      - name: Apply migrations (if using Alembic)
+        if: hashFiles('alembic/**') != ''
+        run: alembic upgrade head
+
+      - name: Wait for Postgres & Redis
+        run: |
+          for i in {1..30}; do
+            pg_isready -h localhost -p 5432 -U master -d dev_db && break
+            sleep 2
+          done
+          for i in {1..30}; do
+            (echo PING | nc -w 2 localhost 6379 | grep -q PONG) && break
+            sleep 2
+          done
+
+      - name: Run integration tests (save reports)
+        run: |
+          mkdir -p reports
+          pytest -q tests/integration -m "integration" \
+            --disable-warnings \
+            --maxfail=1 \
+            --junitxml=reports/integration_results.xml \
+            --cov=app \
+            --cov-report=xml:reports/coverage_integration.xml
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-results-${{ matrix.python-version }}
+          path: reports/
+          if-no-files-found: warn
+
+  docker-build:
+    name: Docker build check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build API image
+        run: docker build -f docker/fastapi.Dockerfile -t app-api:dev .
