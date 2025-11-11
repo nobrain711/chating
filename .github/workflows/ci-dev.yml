@@ -92,14 +92,7 @@ jobs:
           done
 
       - name: Run integration tests (save reports)
-        run: |
-          mkdir -p reports
-          pytest -q tests/integration -m "integration" \
-            --disable-warnings \
-            --maxfail=1 \
-            --junitxml=reports/integration_results.xml \
-            --cov=app \
-            --cov-report=xml:reports/coverage_integration.xml
+        run: make integration
 
       - name: Upload test artifacts
         if: always()

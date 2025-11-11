@@ -87,14 +87,7 @@ jobs:
           done
 
       - name: Run unit tests (save reports)
-        run: |
-          mkdir -p reports
-          pytest -q tests/unit -m "unit" \
-            --disable-warnings \
-            --maxfail=1 \
-            --junitxml=reports/unit_results.xml \
-            --cov=app \
-            --cov-report=xml:reports/coverage_unit.xml
+        run: make unit
 
       - name: Upload test artifacts
         if: always()
