@@ -38,7 +38,7 @@ services:
   # redis (in-memory)
   redis:
     container_name: chating_redis # 컨테이너 이름 설정
-    image: redis:7  # 컨테이너 이미지 설정
+    image: redis:7.4-alpine  # 컨테이너 이미지 설정
     command: ["redis-server", "--appendonly", "yes"]
     ports:
       - "6379:6379"
